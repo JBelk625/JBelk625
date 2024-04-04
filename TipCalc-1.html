@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tip Calculator</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="tipMath.js"></script>
+        
+    </head>
+    <body style="background-color: lightseagreen">
+        <script type="text/javascript">
+            var $ = function (id) {
+                return document.getElementById(id);
+            };
+            
+            window.onload = function () {
+                $("calc").onclick = convert;
+                $("clear").onclick = clrscrn;
+                $("billamt").focus();
+                
+            };
+            function clrscrn () {
+                $("tipForm").reset();
+                $("billamt").focus();
+            }
+            
+            var curr = new Intl.NumberFormat(
+                    'en-US',
+                    {style: 'currency',
+                        currency: 'USD'}
+                            );
+                    
+            function convert () {
+                //alert("You asked to calculate.");
+                var bamt = parseFloat($("billamt").value);
+                tipCust.value = parseFloat($("custPct").value);
+                tipCust.value *= .01;
+                
+                if (isNaN(tipCust.value)) {
+                    alert("Please enter a valid number in the tip amount field.");
+                    $("custPct").focus();
+                    return;
+                }
+                else if (tipCust.value < 0) {
+                    alert("Please enter a valid positive number in the tip amount field.");
+                    $("custPct").focus();
+                    return;
+                }
+                
+                
+                if (isNaN(bamt)) {
+                    alert("Please enter a valid number in the bill amount field.");
+                    $("billamt").focus();
+                    return;
+                } else if (bamt < 0) {
+                    alert("Did they pay you to eat here?");
+                    $("billamt").focus();
+                    return;
+                } 
+                
+        
+                var tp = document.getElementsByName("tP");
+                
+                if (tp[0].checked) {
+                    var v = tp[0].value;
+                    t = TipAmt(bamt, v);
+                    $("result").value = "15% tip of " + curr.format(bamt) + " = " + curr.format(t) + " for a total of " + curr.format(bamt + t);
+                }
+                else if (tp[1].checked) {
+                    var v = tp[1].value;
+                    t = TipAmt(bamt, v);
+                    $("result").value = "18% tip of " + curr.format(bamt) + " = " + curr.format(t) + " for a total of " + curr.format(bamt + t);
+                }
+                else if (tp[2].checked) {
+                    var v = tp[2].value;
+                    t = TipAmt(bamt, v);
+                    $("result").value = "20% tip of " + curr.format(bamt) + " = " + curr.format(t) + " for a total of " + curr.format(bamt + t);
+                }
+                else if (tp[3].checked) {
+                    var v = tp[3].value;
+                    t = TipAmt(bamt, v);
+                    $("result").value = (v * 100) + "% tip of " + curr.format(bamt) + " = " + curr.format(t) + " for a total of " + curr.format(bamt + t);
+
+                }
+                else {
+                    alert ("Please select a tip percent");
+                }
+                //var t = TipAmt(bamt, .2);
+                //$("result").value = "20% tip = $" + t;
+                
+        }
+            
+            
+        </script>
+      <h1>Tip Calculator</h1>
+          <p>Select the tip percent, enter the bill amount and press calculate:<br></p>
+      <form name="tipForm" id="tipForm" action="" method="post">
+          <p>Tip Percent: <br ></p>
+          <input type="radio" id="tip15" name="tP" value=".15">
+          <label for="tip15">15%</label><br>
+          <input type="radio" id="tip18" name="tP" value=".18">
+          <label for="tip18">18%</label><br>
+          <input type="radio" id="tip20" name="tP" value=".2">
+          <label for="tip20">20%</label><br>
+          
+          <input type="radio" id="tipCust" name="tP" value="0">
+          <label for="tipCust">Custom:</label>
+          <input type="text" id="custPct" name="custPct" style="width: 50px">
+          
+          <br >
+          <p>Bill Amount:<br></p>
+          <input type="text" id="billamt" name="billamt">
+          <br ><br> 
+          <input type="button" id="calc" name="calc" value="Calculate">
+          <br >
+          <p>Tip: <br ></p>
+          <input type ="text" id="result" name="result" style="width: 300px;">
+          <br ><br >
+          <input type="button" id="clear" name="clear" value="Clear">
+      </form>
+    </body>
+</html>
